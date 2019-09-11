@@ -6,14 +6,14 @@ import 'package:weather_app/models/src/weather.dart';
 
 // Used to fake data.
 class WeatherDataHelper {
-  DateTime _today = new DateTime.now().toUtc();
+  DateTime _today = new DateTime.now();
   DateTime startDateTime;
   DateTime dailyDate;
   var _random = new math.Random();
   List<City> cities = settings.allAddedCities;
 
   WeatherDataHelper() {
-    startDateTime = new DateTime.utc(_today.year, _today.month, _today.day, 0);
+    startDateTime = new DateTime(_today.year, _today.month, _today.day, 0);
     dailyDate = _today;
   }
 
@@ -77,7 +77,7 @@ class WeatherDataHelper {
         min: runningMin,
         max: runningMax,
         date: dailyDate);
-    dailyDate.add(Duration(days: 1));
+    dailyDate = dailyDate.add(Duration(days: 1));
     return forecastDay;
   }
 
