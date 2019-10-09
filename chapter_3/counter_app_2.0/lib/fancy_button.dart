@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class FancyButton extends StatefulWidget {
+  const FancyButton({Key key, this.onPressed, this.child}) : super(key: key);
+
   final VoidCallback onPressed;
   final Widget child;
-
-  const FancyButton({Key key, this.onPressed, this.child}) : super(key: key);
 
   @override
   _FancyButtonState createState() => _FancyButtonState();
@@ -29,7 +29,7 @@ class _FancyButtonState extends State<FancyButton> {
   }
 }
 
-final _random = new Random();
+final _random = Random();
 int next(int min, int max) => min + _random.nextInt(max - min);
 
 var colors = [

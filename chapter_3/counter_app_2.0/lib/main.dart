@@ -7,12 +7,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Hot Reload Demo'),
+      home: MyHomePage(title: 'Hot Reload Demo'),
     );
   }
 }
@@ -28,28 +28,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List<Widget> _buttons;
+  bool _reversed = false;
+  List<UniqueKey> _buttonKeys = [UniqueKey(), UniqueKey()];
 
   initState() {
     super.initState();
-    _buttons = <Widget>[
-      FancyButton(
-        key: UniqueKey(),
-        child: Text(
-          "Decrement",
-          style: TextStyle(color: Colors.white),
-        ),
-        onPressed: _decrementCounter,
-      ),
-      FancyButton(
-        key: UniqueKey(),
-        child: Text(
-          "Increment",
-          style: TextStyle(color: Colors.white),
-        ),
-        onPressed: _incrementCounter,
-      ),
-    ];
   }
 
   void _incrementCounter() {
@@ -61,22 +44,40 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _resetCounter() {
-    setState(() => _counter = 0);
-    _swap();
-  }
-
-  void _swap() {
-    setState(() => _buttons.insert(0, _buttons.removeAt(_buttons.length - 1)));
+    setState(() {
+        _counter = 0;
+        _reversed = !_reversed;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
+    final incrementButton = FancyButton(
+      key: _buttonKeys.first,
+      child: Text(
+        'Decrement',
+        style: TextStyle(color: Colors.white),
       ),
-      body: new Center(
-        child: new Column(
+      onPressed: _decrementCounter,
+    );
+    final decrementButton = FancyButton(
+      key: _buttonKeys.last,
+      child: Text(
+        'Increment',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: _incrementCounter,
+    );
+    List<Widget> buttons = _reversed
+      ? <Widget>[decrementButton, incrementButton]
+      : <Widget>[incrementButton, decrementButton];
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
@@ -100,15 +101,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _buttons,
+              children: buttons,
             ),
           ],
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: _resetCounter,
         tooltip: 'Reset',
-        child: new Icon(Icons.refresh),
+        child: Icon(Icons.refresh),
       ),
     );
   }
