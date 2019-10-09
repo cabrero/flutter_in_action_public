@@ -15,9 +15,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final AppSettings settings;
-
   const MyApp({Key key, this.settings}) : super(key: key);
+
+  final AppSettings settings;
 
   @override
   Widget build(BuildContext context) {

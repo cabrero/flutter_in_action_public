@@ -6,19 +6,26 @@ import 'package:weather_app/models/src/countries.dart';
 import 'package:weather_app/styles.dart';
 
 class AddNewCityPage extends StatefulWidget {
-  final AppSettings settings;
-
   const AddNewCityPage({Key key, this.settings}) : super(key: key);
+
+  final AppSettings settings;
 
   @override
   _AddNewCityPageState createState() => _AddNewCityPageState();
 }
 
 class _AddNewCityPageState extends State<AddNewCityPage> {
-  City _newCity = new City.fromUserInput();
+  City _newCity = City.fromUserInput();
   bool _formChanged = false;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  FocusNode _focusNode;
 
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +34,23 @@ class _AddNewCityPageState extends State<AddNewCityPage> {
           "Add City",
           style: TextStyle(color: AppColor.textColorLight),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.done),
+            onPressed: _formChanged
+              ? () {
+                if (_formKey.currentState.validate()) {
+                  _formKey.currentState.save();
+                  _handleAddNewCity();
+                  Navigator.pop(context);
+                }
+                else {
+                  FocusScope.of(context).requestFocus(_focusNode);
+                }
+              }
+              : null,
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -34,45 +58,13 @@ class _AddNewCityPageState extends State<AddNewCityPage> {
           key: _formKey,
           onChanged: _onFormChange,
           onWillPop: _onWillPop,
-          child: Column(
+          child: ListView(
+            shrinkWrap: true,
             children: <Widget>[
-              _titleField,
-              _stateName,
-              _countryDropdownField,
-              _isDefaultField,
-              Divider(
-                height: 32.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FlatButton(
-                        textColor: Colors.red[400],
-                        child: Text("Cancel"),
-                        onPressed: () async {
-                          if (await _onWillPop()) {
-                            Navigator.of(context).pop(false);
-                          }
-                        }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      color: Colors.blue[400],
-                      child: Text("Submit"),
-                      onPressed: _formChanged
-                          ? () {
-                              _formKey.currentState.save();
-                              _handleAddNewCity();
-                              Navigator.pop(context);
-                            }
-                          : null,
-                    ),
-                  )
-                ],
-              ),
+              _titleField(),
+              _stateName(),
+              _countryDropdownField(),
+              _isDefaultField(),
             ],
           ),
         ),
@@ -80,10 +72,12 @@ class _AddNewCityPageState extends State<AddNewCityPage> {
     );
   }
 
-  Widget get _titleField {
+  Widget _titleField() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: TextFormField(
+          textInputAction: TextInputAction.next,
+          onFieldSubmitted: (String Value) { FocusScope.of(context).nextFocus(); },
           onSaved: (String val) => _newCity.name = val,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
@@ -100,10 +94,13 @@ class _AddNewCityPageState extends State<AddNewCityPage> {
         ));
   }
 
-  Widget get _stateName {
+  Widget _stateName() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: TextFormField(
+          focusNode: _focusNode,
+          textInputAction: TextInputAction.next,
+          onFieldSubmitted: (String Value) { FocusScope.of(context).nextFocus(); },
           onSaved: (String val) => print(val),
           decoration: InputDecoration(
             border: OutlineInputBorder(),
@@ -118,7 +115,7 @@ class _AddNewCityPageState extends State<AddNewCityPage> {
         ));
   }
 
-  Widget get _countryDropdownField {
+  Widget _countryDropdownField() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: DropDownExpanded<Country>(
@@ -140,7 +137,7 @@ class _AddNewCityPageState extends State<AddNewCityPage> {
 
   bool _isDefaultFlag = false;
 
-  Widget get _isDefaultField {
+  Widget _isDefaultField() {
     return FormField(
         onSaved: (val) => _newCity.active = _isDefaultFlag,
         builder: (context) {

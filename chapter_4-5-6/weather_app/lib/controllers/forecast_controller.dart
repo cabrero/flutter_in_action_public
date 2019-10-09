@@ -1,6 +1,7 @@
 import 'package:weather_app/models/src/app_settings.dart';
 import 'package:weather_app/models/src/forecast_animation_state.dart';
 import 'package:weather_app/models/src/weather.dart';
+import 'package:weather_app/models/src/countries.dart';
 import 'package:weather_app/utils/generate_weather_data.dart';
 
 class ForecastController {

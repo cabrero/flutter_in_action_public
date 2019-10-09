@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/models/src/app_settings.dart';
 import 'package:weather_app/models/src/weather.dart';
+import 'package:weather_app/models/src/countries.dart';
 import 'package:weather_app/page/add_city_page.dart';
 import 'package:weather_app/styles.dart';
 import 'package:weather_app/widget/segmented_control.dart';
 
 class SettingsPage extends StatefulWidget {
-  final AppSettings settings;
-
   const SettingsPage({Key key, this.settings}) : super(key: key);
+
+  final AppSettings settings;
 
   @override
   SettingsPageState createState() {
@@ -35,13 +36,10 @@ class SettingsPageState extends State<SettingsPage> {
   }
 
   void _handleDismiss(DismissDirection dir, City removedCity) {
-    print(dir);
-    if (dir == DismissDirection.endToStart) {
-      allAddedCities.removeWhere((city) => city == removedCity);
-      if (widget.settings.activeCity == removedCity) {
-        widget.settings.activeCity =
-            allAddedCities.firstWhere((city) => city.active);
-      }
+    allAddedCities.removeWhere((city) => city == removedCity);
+    if (widget.settings.activeCity == removedCity) {
+      widget.settings.activeCity =
+      allAddedCities.firstWhere((city) => city.active);
     }
   }
 
@@ -71,7 +69,7 @@ class SettingsPageState extends State<SettingsPage> {
             Divider(),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add new city"),
+              title: Text('Add new city'),
               onTap: () {
                 Navigator.of(context).push(new MaterialPageRoute(
                     fullscreenDialog: true,
@@ -86,7 +84,7 @@ class SettingsPageState extends State<SettingsPage> {
                   shrinkWrap: true,
                   itemCount: allAddedCities.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var city = allAddedCities[index];
+                    City city = allAddedCities[index];
                     return Dismissible(
                       onDismissed: (DismissDirection dir) =>
                           _handleDismiss(dir, city),

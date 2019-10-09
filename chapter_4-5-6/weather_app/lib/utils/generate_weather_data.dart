@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:weather_app/models/src/app_settings.dart' as settings;
 import 'package:weather_app/models/src/app_settings.dart';
 import 'package:weather_app/models/src/weather.dart';
+import 'package:weather_app/models/src/countries.dart';
 
 // Used to fake data.
 class WeatherDataHelper {
@@ -10,7 +11,7 @@ class WeatherDataHelper {
   DateTime startDateTime;
   DateTime dailyDate;
   var _random = new math.Random();
-  List<City> cities = settings.allAddedCities;
+  List<City> cities = allAddedCities;
 
   WeatherDataHelper() {
     startDateTime = new DateTime(_today.year, _today.month, _today.day, 0);

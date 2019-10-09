@@ -111,31 +111,31 @@ class _ForecastPageState extends State<ForecastPage>
   }
 
   void _buildTweens() {
-    _colorTween = new ColorTween(
+    _colorTween = ColorTween(
       begin: currentAnimationState.sunColor,
       end: nextAnimationState.sunColor,
     );
-    _backgroundColorTween = new ColorTween(
+    _backgroundColorTween = ColorTween(
       begin: currentAnimationState.backgroundColor,
       end: nextAnimationState.backgroundColor,
     );
-    _textColorTween = new ColorTween(
+    _textColorTween = ColorTween(
       begin: currentAnimationState.textColor,
       end: nextAnimationState.textColor,
     );
-    _cloudColorTween = new ColorTween(
+    _cloudColorTween = ColorTween(
       begin: currentAnimationState.cloudColor,
       end: nextAnimationState.cloudColor,
     );
-    _positionOffsetTween = new Tween<Offset>(
+    _positionOffsetTween = Tween<Offset>(
       begin: currentAnimationState.sunOffsetPosition,
       end: nextAnimationState.sunOffsetPosition,
     );
 
-    var cloudOffsetSequence = new OffsetSequence.fromBeginAndEndPositions(
+    var cloudOffsetSequence = OffsetSequence.fromBeginAndEndPositions(
         currentAnimationState.cloudOffsetPosition,
         nextAnimationState.cloudOffsetPosition);
-    _cloudPositionOffsetTween = new TweenSequence<Offset>(
+    _cloudPositionOffsetTween = TweenSequence<Offset>(
       <TweenSequenceItem<Offset>>[
         TweenSequenceItem<Offset>(
           weight: 50.0,

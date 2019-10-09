@@ -1,4 +1,4 @@
-import 'package:weather_app/models/src/app_settings.dart';
+import 'package:weather_app/models/src/countries.dart';
 
 class Forecast {
   City city;
